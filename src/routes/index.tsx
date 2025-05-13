@@ -1,36 +1,51 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Text, Button, Grid, TextField, Box, Heading } from "@radix-ui/themes";
+import { z } from "zod";
+import { useState } from "react";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsSubmitting(true);
+
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
 
     if (typeof email === "string") {
+      const result = z
+        .string()
+        .email("Please enter a valid email address")
+        .safeParse(email);
+      if (!result.success) {
+        alert(result.error.errors[0].message);
+        setIsSubmitting(false);
+        return;
+      }
+
       try {
         const res = await fetch(
-          `https://script.google.com/macros/s/AKfycbxPa-0OrNGjsAN7Wo1Y4qKIieRrjXVgoqu8JOWGd0HM50FZLXmxF0zAMubNq8Y2OfCywg/exec`,
-          {
-            method: "POST",
-            body: JSON.stringify({ email }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          `https://script.google.com/macros/s/AKfycbzYR-ESdzFrMNqy3P4Y-Xzk6u0zNNAY09vDW8MYblNoNtoX-PRs7UmHMWNMepMycSnecg/exec?email=${encodeURIComponent(email)}`
         );
+        const data = await res.json();
 
-        if (!res.ok) throw new Error("Failed to submit");
-
-        alert("You're on the list!");
+        if (data.success) {
+          alert("You're on the list!");
+        } else {
+          alert(data.reason || "Something went wrong");
+        }
       } catch (err) {
         alert("Submission failed. Please try again.");
         console.error(err);
+      } finally {
+        setIsSubmitting(false);
       }
+    } else {
+      setIsSubmitting(false);
     }
   };
 
@@ -67,8 +82,8 @@ function RouteComponent() {
               size="2"
               placeholder="Email address"
             />
-            <Button type="submit" size="2">
-              Join the waitlist
+            <Button type="submit" size="2" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Join the waitlist"}
             </Button>
           </Grid>
         </form>
