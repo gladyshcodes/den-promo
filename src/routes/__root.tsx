@@ -11,6 +11,18 @@ import css from "@radix-ui/themes/styles.css?url";
 
 export const Route = createRootRoute({
   head: () => ({
+    meta: [
+      {
+        charSet: "utf-8",
+      },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
+      },
+      {
+        title: "den.computer",
+      },
+    ],
     links: [{ rel: "stylesheet", href: css }],
   }),
   component: RootComponent,
