@@ -7,9 +7,12 @@ import {
   createRootRoute,
 } from "@tanstack/react-router";
 import { Theme as ThemeProvider } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
+import css from "@radix-ui/themes/styles.css?url";
 
 export const Route = createRootRoute({
+  head: () => ({
+    links: [{ rel: "stylesheet", href: css }],
+  }),
   component: RootComponent,
 });
 
