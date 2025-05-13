@@ -1,3 +1,4 @@
+import React from "react";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import {
   HeadContent,
@@ -5,17 +6,10 @@ import {
   Scripts,
   createRootRoute,
 } from "@tanstack/react-router";
-import { CacheProvider } from "@emotion/react";
-import { Container, CssBaseline, ThemeProvider } from "@mui/material";
-import createCache from "@emotion/cache";
-import fontsourceVariableRobotoCss from "@fontsource-variable/roboto?url";
-import React from "react";
-import { theme } from "~/setup/theme";
+import { Theme as ThemeProvider } from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
 
 export const Route = createRootRoute({
-  head: () => ({
-    links: [{ rel: "stylesheet", href: fontsourceVariableRobotoCss }],
-  }),
   component: RootComponent,
 });
 
@@ -28,16 +22,7 @@ function RootComponent() {
 }
 
 function Providers({ children }: { children: React.ReactNode }) {
-  const emotionCache = createCache({ key: "css" });
-
-  return (
-    <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </CacheProvider>
-  );
+  return <ThemeProvider>{children}</ThemeProvider>;
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -48,9 +33,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <Providers>
-          <Container component="main" sx={{ paddingBlock: 4 }}>
+          <main
+            style={{
+              paddingBlock: 16,
+            }}
+          >
             {children}
-          </Container>
+          </main>
         </Providers>
 
         <TanStackRouterDevtools position="bottom-right" />

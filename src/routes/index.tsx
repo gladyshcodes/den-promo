@@ -1,13 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Input,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Text, Button, Grid, TextField, Box, Heading } from "@radix-ui/themes";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -43,68 +35,44 @@ function RouteComponent() {
   };
 
   return (
-    <Stack alignItems="center" height="100%" padding={2}>
-      <Stack direction="row" alignItems="center" spacing={2} marginBottom={4}>
+    <>
+      <Box mb="2">
         <img
-          src="/logo_pixel_art.svg"
-          alt="den.computer logo"
+          src="/den_logo.svg"
+          alt="den logo"
           style={{ width: 48, height: 48 }}
         />
-        <Typography variant="h1" fontSize="2rem">
-          den.computer
-        </Typography>
-      </Stack>
+        <Heading>den.computer</Heading>
+      </Box>
 
-      <Card
-        sx={{
-          width: "100%",
-          maxWidth: 400,
-          boxShadow: 2,
+      <Box
+        style={{
+          background: "var(--gray-a2)",
+          border: "1px dashed var(--gray-a7)",
         }}
+        maxWidth="400px"
+        minWidth="300px"
+        p="4"
       >
-        <CardContent>
-          <Typography variant="h5" marginBottom={2}>
-            Join the waitlist
-          </Typography>
-
-          <Typography variant="body1" marginBottom={3}>
-            Enter your email address and we'll let you know when your spot is
-            ready.
-          </Typography>
-
-          <Box component="form" onSubmit={handleSubmit}>
-            <Input
+        <form onSubmit={handleSubmit}>
+          <Grid gap="3">
+            <Heading size="3">Join the waitlist</Heading>
+            <Text>
+              Enter your email address and we'll let you know when your spot is
+              ready.
+            </Text>
+            <TextField.Root
               name="email"
               type="email"
+              size="2"
               placeholder="Email address"
-              sx={{ width: "100%", marginBottom: 2 }}
-              inputProps={{
-                style: {
-                  padding: 16,
-                  border: "1px solid #ccc",
-                },
-              }}
-              disableUnderline
-              autoComplete="email"
-              autoFocus
-              required
             />
-
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              sx={{
-                paddingY: 1.5,
-                textTransform: "none",
-                borderRadius: 0,
-              }}
-            >
+            <Button type="submit" size="2">
               Join the waitlist
             </Button>
-          </Box>
-        </CardContent>
-      </Card>
-    </Stack>
+          </Grid>
+        </form>
+      </Box>
+    </>
   );
 }
