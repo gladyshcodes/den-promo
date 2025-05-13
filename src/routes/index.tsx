@@ -29,7 +29,7 @@ function RouteComponent() {
 
       try {
         const res = await fetch(
-          `https://script.google.com/macros/s/AKfycbzYR-ESdzFrMNqy3P4Y-Xzk6u0zNNAY09vDW8MYblNoNtoX-PRs7UmHMWNMepMycSnecg/exec?email=${encodeURIComponent(email)}`
+          `${import.meta.env.VITE_SUBSCRIBE_ENDPOINT}?email=${encodeURIComponent(email)}`
         );
         const data = await res.json();
 
